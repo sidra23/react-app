@@ -27,17 +27,17 @@ jobs:
       - name: Build Project
         run: npm run build
       - name: Connect to gcloud
-      uses: google-github-actions/setup-gcloud@v0
-      with:
+        uses: google-github-actions/setup-gcloud@v0
+        with:
         project_id: ${{ secrets.GCLOUD_PROJECTID }}
         service_account_key: ${{ secrets.GCLOUD_APP_DEPLOYER_ACCOUNT}}
         export_default_credentials: true
 
-    - name: Deploy to App Engine
-      id: deploy
-      uses: google-github-actions/deploy-appengine@v0.2.0
-      with:
-        deliverables: app.yaml
+      - name: Deploy to App Engine
+        id: deploy
+        uses: google-github-actions/deploy-appengine@v0.2.0
+          with:
+        deliverables: main.yaml
         version: v1
         project_id: ${{ secrets.GCLOUD_PROJECTID }}
         credentials: ${{ secrets.GCLOUD_APP_DEPLOYER_ACCOUNT }}
