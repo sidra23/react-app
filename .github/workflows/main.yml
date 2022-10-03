@@ -1,0 +1,43 @@
+# Triggers
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+# Functions
+jobs:
+  # Build Job
+  build:
+    # Name of the job
+    name: Build
+    # The OS to run the job on
+    runs-on: ubuntu-latest
+    # Steps
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Install NPM Dependencies
+        run: npm i
+      - name: Build Project
+        run: npm run build
+      - name: Connect to gcloud
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GCLOUD_PROJECTID }}
+        service_account_key: ${{ secrets.GCLOUD_APP_DEPLOYER_ACCOUNT}}
+        export_default_credentials: true
+
+    - name: Deploy to App Engine
+      id: deploy
+      uses: google-github-actions/deploy-appengine@v0.2.0
+      with:
+        deliverables: app.yaml
+        version: v1
+        project_id: ${{ secrets.GCLOUD_PROJECTID }}
+        credentials: ${{ secrets.GCLOUD_APP_DEPLOYER_ACCOUNT }}
