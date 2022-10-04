@@ -1,5 +1,6 @@
 const reducer = (state, action) =>{
     switch (action.type) {
+        
         case "GET_NEXTPAGE" :
             let pageNum = state.page +1
             if(pageNum >= state.nbPages){
@@ -46,6 +47,7 @@ const reducer = (state, action) =>{
                 nbPages: action.payload.nbPages,
                 isLoading:true,
             };
+            default:
     }
     return state
 
